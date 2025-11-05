@@ -4,14 +4,20 @@ on:
   workflow_dispatch:
     inputs:
       test_tag:
-        description: 'Tag del escenario a ejecutar'
-        required: true
-        default: '@smokeGetStoreOrderOrderId'
-        type: choice
-        options:
-          - '@getStoreOrderOrderId404'
-          - '@getStoreOrderValidateResponseSchema'
-          - '@retoOka'
+        description: 'Tag del escenario a ejecutar (ej: @smoke) — opcional'
+        required: false
+        default: ''
+        type: string
+      test_name:
+        description: 'Nombre exacto del escenario a ejecutar (opcional)'
+        required: false
+        default: ''
+        type: string
+      karate_options:
+        description: 'Opciones arbitrarias para Karate (opcional). Ej: --tags @mytag -n "Scenario name"'
+        required: false
+        default: ''
+        type: string
 jobs:
   karate-tests:
     runs-on: Ubuntu-latest
@@ -25,7 +31,21 @@ jobs:
         distribution: 'temurin'
     - name: Run Karate Tests
       run: |
-        mvn test -Dkarate.options="--tags ${{ GitHub.event.inputs.test_tag }}"
+        set -e
+        # construir KARATE_OPTS a partir de los inputs (permite combinarlos libremente)
+        KARATE_OPTS="${{ github.event.inputs.karate_options }}"
+
+        if [ -n "${{ github.event.inputs.test_tag }}" ]; then
+          KARATE_OPTS="--tags ${{ github.event.inputs.test_tag }} $KARATE_OPTS"
+        fi
+
+        if [ -n "${{ github.event.inputs.test_name }}" ]; then
+          # -n se usa para filtrar por nombre de escenario en Karate
+          KARATE_OPTS="$KARATE_OPTS -n \"${{ github.event.inputs.test_name }}\""
+        fi
+
+        echo "Ejecutando mvn test -Dkarate.options=\"$KARATE_OPTS\""
+        mvn test -Dkarate.options="$KARATE_OPTS"
     - name: Upload Test Reports
       if: always()
       uses: actions/upload-artifact@v4
