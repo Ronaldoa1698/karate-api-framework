@@ -8,23 +8,28 @@ on:
         required: true
         default: '@smokeGetStoreOrderOrderId'
         type: string
+
 jobs:
   karate-tests:
-    runs-on: Ubuntu-latest
+    runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Setup Java 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-    - name: Run Karate Tests
-      run: |
-        mvn test -Dkarate.options="--tags ${{ GitHub.event.inputs.test_tag }}"
-    - name: Upload Test Reports
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: karate-reports
-        path: target/karate-reports/
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run Karate Tests
+        run: |
+          mvn test -Dkarate.options="--tags ${{ github.event.inputs.test_tag }}"
+
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-reports
+          path: target/karate-reports/
