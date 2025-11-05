@@ -5,18 +5,8 @@ on:
     inputs:
       test_tag:
         description: 'Tag del escenario a ejecutar (ej: @smoke) — opcional'
-        required: false
-        default: ''
-        type: string
-      test_name:
-        description: 'Nombre exacto del escenario a ejecutar (opcional)'
-        required: false
-        default: ''
-        type: string
-      karate_options:
-        description: 'Opciones arbitrarias para Karate (opcional). Ej: --tags @mytag -n "Scenario name"'
-        required: false
-        default: ''
+        required: true
+        default: '@retoOka'
         type: string
 jobs:
   karate-tests:
