@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       test_tag:
-      description: 'Tag del escenario a ejecutar (puedes escribirlo manualmente, ej: @miTag)'
-      required: true
-      default: '@smokeGetStoreOrderOrderId'
-      type: string
+        description: 'Tag del escenario a ejecutar (puedes escribirlo manualmente, ej: @miTag)'
+        required: true
+        default: '@smokeGetStoreOrderOrderId'
+        type: string
 jobs:
   karate-tests:
     runs-on: Ubuntu-latest
