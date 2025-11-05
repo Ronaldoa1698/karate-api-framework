@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       test_tag:
-        description: 'Tag del escenario a ejecutar (ej: @smoke) — opcional'
+        description: 'Tag del escenario a ejecutar (ej: @smoke)'
         required: true
         default: '@retoOka'
         type: string
@@ -22,20 +22,9 @@ jobs:
     - name: Run Karate Tests
       run: |
         set -e
-        # construir KARATE_OPTS a partir de los inputs (permite combinarlos libremente)
-        KARATE_OPTS="${{ github.event.inputs.karate_options }}"
-
-        if [ -n "${{ github.event.inputs.test_tag }}" ]; then
-          KARATE_OPTS="--tags ${{ github.event.inputs.test_tag }} $KARATE_OPTS"
-        fi
-
-        if [ -n "${{ github.event.inputs.test_name }}" ]; then
-          # -n se usa para filtrar por nombre de escenario en Karate
-          KARATE_OPTS="$KARATE_OPTS -n \"${{ github.event.inputs.test_name }}\""
-        fi
-
-        echo "Ejecutando mvn test -Dkarate.options=\"$KARATE_OPTS\""
-        mvn test -Dkarate.options="$KARATE_OPTS"
+        TAG="${{ github.event.inputs.test_tag }}"
+        echo "Ejecutando mvn test -Dkarate.options=\"--tags ${TAG}\""
+        mvn test -Dkarate.options="--tags ${TAG}"
     - name: Upload Test Reports
       if: always()
       uses: actions/upload-artifact@v4
