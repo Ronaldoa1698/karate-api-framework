@@ -6,7 +6,7 @@ on:
       test_tag:
         description: 'Tag del escenario a ejecutar (ej: @smoke)'
         required: true
-        default: '@retoOka'
+        default: '@smokePostOrder'
         type: string
 jobs:
   karate-tests:
