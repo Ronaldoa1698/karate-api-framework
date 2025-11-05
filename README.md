@@ -40,7 +40,7 @@ Por ejemplo, para ejecutar el escenario de prueba etiquetado con `@TokenTest`, u
 
 Para Windows/Linux/Mac:
 
-## local
+## Ejecucion desde local
 ```bash
 # Ejecución por Tags
 mvn test -Dkarate.options="--tags @smoke"
