@@ -50,9 +50,10 @@ mvn test --% -Dkarate.options="--tags @TokenTest"
 
 # Ejecución por entornos
 mvn test -Dkarate.options="--tags @TokenTest" -Dkarate.env="certificacion"
+```
 
 ## Ejecución desde GitHub Actions
-
+```bash
 El workflow se llama "Karate API Tests" y está configurado para ejecutarse con `workflow_dispatch`. El input principal es `test_tag` y se usa así para filtrar escenarios por tag.
 
 Cómo ejecutar desde la interfaz web:
@@ -76,3 +77,4 @@ Notas importantes:
 - Actualmente el workflow pide `test_tag` en el formulario (required). Si prefieres hacerlo opcional, edita `.github/workflows/karate-tests.yml` para cambiar `required: true` a `required: false`.
 - No necesitas credenciales locales para que Actions ejecute el workflow; todo se ejecuta en runners de GitHub.
 - Si el nombre del escenario contiene espacios se deberá cuidar el quoting, pero para tags normales no es necesario.
+```
